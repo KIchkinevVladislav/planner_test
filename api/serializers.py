@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ivents.models import Organization
+from events.models import Organization
 
 
 class OrganizationSerializer(serializers.ModelSerializer):

@@ -2,7 +2,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from api.serializers import OrganizationSerializer
-from ivents.models import Organization
+from events.models import Organization
 
 
 class OrganizationCreateAPIView(CreateAPIView):
