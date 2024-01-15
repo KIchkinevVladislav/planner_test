@@ -76,8 +76,14 @@ class Organization_Event(models.Model):
     in the database
     To implement the connection of several organizations with one event.
     """        
-    event_id = models.ForeignKey(Event, on_delete=models.CASCADE)
-    organization_id = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    event_id = models.ForeignKey(
+        Event, 
+        on_delete=models.CASCADE
+    )
+    organization_id = models.ForeignKey(
+        Organization, 
+        on_delete=models.CASCADE
+    )
 
     def __str__(self) -> str:
         return  f'Организатор мероприятия {self.event_id} - {self.organization_id}'

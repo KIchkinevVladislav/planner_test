@@ -1,7 +1,10 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
+from django.contrib.auth import get_user_model
 
-from .models import Organization, Event, Organization_Event, User
+from .models import Organization, Event, Organization_Event
+
+User = get_user_model()
 """
 Register the created models 
 for their processing by the administrator
@@ -42,4 +45,11 @@ class EventAdmin(admin.ModelAdmin):
 
     get_image.short_description = 'Превью афиши'
 
-admin.site.register(User)
+
+@admin.register(User)
+class OrganizationAdmin(admin.ModelAdmin):
+    list_display = ('email', 'first_name', 'last_name', 'phone_number', 'organization')
+    fields = ('email', ('first_name', 'last_name'), 'phone_number', 'organization')
+    list_filter = ('organization',)
+    search_fields = ('email', 'last_name')
+    ordering = ('last_name', 'organization')

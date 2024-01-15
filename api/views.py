@@ -6,6 +6,9 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import LimitOffsetPagination
 
+from django.contrib.auth import logout, login
+from django.shortcuts import redirect
+
 
 from api.serializers import OrganizationSerializer, EventSerializer, EventCreateSerializer, SignupSerializer
 from events.models import Organization, Event
@@ -17,7 +20,7 @@ class OrganizationCreateAPIView(CreateAPIView):
     """
     queryset = Organization.objects.all()
     serializer_class = OrganizationSerializer
-    # permission_classes = [IsAuthenticated,]
+    #permission_classes = [IsAuthenticated,]
     
 
 class EventCreateView(CreateAPIView):
@@ -63,3 +66,8 @@ class EventListView(ListAPIView):
 class SignupAPIView(CreateAPIView):
     serializer_class = SignupSerializer
     permission_classes = [AllowAny,]
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('http://127.0.0.1:8000/api/v1/auth/login/')
