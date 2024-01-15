@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 from events.models import Organization, Event
 
@@ -35,7 +37,9 @@ class EventCreateSerializer(serializers.ModelSerializer):
 
 
 class SignupSerializer(serializers.ModelSerializer):
-
+    """
+    Serializer for create model User
+    """
     class Meta:
         model = User
         fields = ('id', 'email', 'password')
@@ -46,4 +50,8 @@ class SignupSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(email=validated_data['email'], password=validated_data['password'])
+        try:
+            validate_password(password=validated_data['password'], user=user)
+        except ValidationError as err:
+            raise serializers.ValidationError({'password': err.messages})
         return user
