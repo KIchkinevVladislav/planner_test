@@ -48,8 +48,8 @@ class EventAdmin(admin.ModelAdmin):
 
 @admin.register(User)
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ('email', 'first_name', 'last_name', 'phone_number', 'organization')
-    fields = ('email', ('first_name', 'last_name'), 'phone_number', 'organization')
+    list_display = ('email', 'last_name', 'first_name', 'organization', 'phone_number')
+    fields = ('email', ('first_name', 'last_name'), 'phone_number', 'organization', 'is_staff')
     list_filter = ('organization',)
     search_fields = ('email', 'last_name')
     ordering = ('last_name', 'organization')
