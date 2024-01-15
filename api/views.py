@@ -56,7 +56,7 @@ class EventListView(ListAPIView):
     search_fields = ['title']
     ordering_fields = ['date']
     pagination_class = LimitOffsetPagination
-    # permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated,]
 
     def get_queryset(self):
         queryset = Event.objects.all()
