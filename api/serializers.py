@@ -47,11 +47,18 @@ class SignupSerializer(serializers.ModelSerializer):
             'password': {'write_only': True},
             'id': {'read_only': True}
         }
+        
 
     def create(self, validated_data):
-        user = User.objects.create_user(email=validated_data['email'], password=validated_data['password'])
+        password = validated_data['password']
+        
         try:
-            validate_password(password=validated_data['password'], user=user)
+            validate_password(password=password)
         except ValidationError as err:
             raise serializers.ValidationError({'password': err.messages})
+        
+        user = User(email=validated_data['email'])
+        user.set_password(password)
+        user.save()
+
         return user
