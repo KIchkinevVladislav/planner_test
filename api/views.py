@@ -30,3 +30,7 @@ class EventCreateView(CreateAPIView):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+#проверять, что запущен redis: redis-server
+#проверять, что запущен celery: celery -A planner worker --loglevel=INFO

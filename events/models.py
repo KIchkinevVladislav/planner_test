@@ -80,8 +80,8 @@ class Organization_Event(models.Model):
     organization_id = models.ForeignKey(Organization, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f'Организатор мероприятия {self.event_id} - {self.organization_id}'
+        return  f'Организатор мероприятия {self.event_id} - {self.organization_id}'
     
     class Meta():
         verbose_name = 'Связь организации и мероприятия'
-        verbose_name_plural = 'Cвязи организацией и мероприятий'     
+        verbose_name_plural = 'Cвязи организацией и мероприятий'    
