@@ -22,10 +22,9 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 
 @admin.register(Event)
-class IventAdmin(admin.ModelAdmin):
+class EventAdmin(admin.ModelAdmin):
     inlines = [OrganizationInline]
     list_display = ('title', 'description', 'display_organizations', 'date', 'get_image')
-    # fields = ('title', 'description', 'display_organizations', 'image', 'date')
     readonly_fields = ('get_image',)
     list_filter = ('title', 'date')
     search_fields = ('title', 'organizations__title')
@@ -38,6 +37,7 @@ class IventAdmin(admin.ModelAdmin):
     display_organizations.short_description = 'Организаторы'
 
     def get_image(self, obj):
+        # отображение изображения из модели в админке
         return mark_safe(f'<img src={obj.image.url} width="100" height="110"')
 
     get_image.short_description = 'Превью афиши'
