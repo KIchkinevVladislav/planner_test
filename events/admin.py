@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import Organization, Event, Organization_Event
+from .models import Organization, Event, Organization_Event, User
 """
 Register the created models 
 for their processing by the administrator
@@ -41,3 +41,5 @@ class EventAdmin(admin.ModelAdmin):
         return mark_safe(f'<img src={obj.image.url} width="100" height="110"')
 
     get_image.short_description = 'Превью афиши'
+
+admin.site.register(User)

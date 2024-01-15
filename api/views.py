@@ -1,13 +1,13 @@
 from rest_framework import status
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.response import Response
-from rest_framework import generics, filters
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import filters
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import LimitOffsetPagination
 
 
-from api.serializers import OrganizationSerializer, EventSerializer, EventCreateSerializer
+from api.serializers import OrganizationSerializer, EventSerializer, EventCreateSerializer, SignupSerializer
 from events.models import Organization, Event
 
 
@@ -39,12 +39,12 @@ class EventCreateView(CreateAPIView):
 #проверять, что запущен celery: celery -A planner worker --loglevel=INFO
     
 
-class EventListView(generics.ListAPIView):
+class EventListView(ListAPIView):
     """
     Displaying a list of events:
     - filtering and sorting by date 
     - search by name 
-    - limited pagination
+    - limited pagination (default=10)
     """  
     queryset = Event.objects.all()
     serializer_class = EventSerializer
@@ -58,3 +58,8 @@ class EventListView(generics.ListAPIView):
     def get_queryset(self):
         queryset = Event.objects.all()
         return queryset
+    
+
+class SignupAPIView(CreateAPIView):
+    serializer_class = SignupSerializer
+    permission_classes = [AllowAny,]

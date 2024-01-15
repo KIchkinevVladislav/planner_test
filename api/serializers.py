@@ -1,7 +1,9 @@
 from rest_framework import serializers
+from django.contrib.auth import get_user_model
 
-from events.models import Organization, Event, Organization_Event
+from events.models import Organization, Event
 
+User = get_user_model()
 
 class OrganizationSerializer(serializers.ModelSerializer):
     """
@@ -9,7 +11,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Organization
-        fields = ('title', 'description', 'address', 'postcode')
+        fields = ('id', 'title', 'description', 'address', 'postcode')
 
         
 class EventSerializer(serializers.ModelSerializer):
@@ -17,7 +19,7 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ('title', 'description', 'organizations', 'date', 'image')
+        fields = ('id', 'title', 'description', 'organizations', 'date', 'image')
 
 
 class EventCreateSerializer(serializers.ModelSerializer):
@@ -29,4 +31,19 @@ class EventCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ('title', 'description', 'organizations', 'date', 'image')
+        fields = ('id', 'title', 'description', 'organizations', 'date', 'image')
+
+
+class SignupSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'password')
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'id': {'read_only': True}
+        }
+
+    def create(self, validated_data):
+        user = User.objects.create_user(email=validated_data['email'], password=validated_data['password'])
+        return user
