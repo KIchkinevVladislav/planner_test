@@ -1,7 +1,11 @@
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
+from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.pagination import LimitOffsetPagination
+
 
 from api.serializers import OrganizationSerializer, EventSerializer, EventCreateSerializer
 from events.models import Organization, Event
@@ -31,6 +35,26 @@ class EventCreateView(CreateAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-
 #проверять, что запущен redis: redis-server
 #проверять, что запущен celery: celery -A planner worker --loglevel=INFO
+    
+
+class EventListView(generics.ListAPIView):
+    """
+    Displaying a list of events:
+    - filtering and sorting by date 
+    - search by name 
+    - limited pagination
+    """  
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['date']
+    search_fields = ['title']
+    ordering_fields = ['date']
+    pagination_class = LimitOffsetPagination
+    # permission_classes = [IsAuthenticated,]
+
+    def get_queryset(self):
+        queryset = Event.objects.all()
+        return queryset
