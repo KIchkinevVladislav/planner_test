@@ -28,10 +28,21 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+ASGI_APPLICATION = 'planner.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +56,7 @@ INSTALLED_APPS = [
 
     'events',
     'api',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -141,9 +153,10 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 # REST Framework
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+   'DEFAULT_AUTHENTICATION_CLASSES': [
+       'rest_framework_simplejwt.authentication.JWTAuthentication',
+    #    'rest_framework.authentication.SessionAuthentication',
+   ],
 }
 
 SIMPLE_JWT = {

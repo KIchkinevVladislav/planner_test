@@ -1,6 +1,6 @@
 from django.db import models
 from datetime import date
-from django.contrib.auth.models import Group, Permission, AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
 class Organization(models.Model):
     """
@@ -136,7 +136,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self) -> str:
         return self.email
-
+    
+    def get_full_name(self):
+        if self.last_name != None and self.first_name !=None:
+            return f'{self.first_name} {self.last_name}'
+        else:
+            return self.email
+    
     class Meta:
             verbose_name = 'Пользователь'
             verbose_name_plural = 'Пользователи'

@@ -64,36 +64,6 @@ class EventSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'organizations', 'date', 'image')
 
 
-
-# class UserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ('id', 'email', 'first_name', 'last_name', 'phone_number', 'organization')
-
-# class EventOrganizersSerializer(serializers.ModelSerializer):
-#     user = UserSerializer()
-
-#     class Meta:
-#         model = EventOrganizers
-#         fields = '__all__'
-
-# class EventSerializer(serializers.ModelSerializer):
-#     organizations = serializers.StringRelatedField(many=True)
-#     organizers = EventOrganizersSerializer(many=True, read_only=True)
-
-#     class Meta:
-#         model = Event
-#         fields = ('id', 'title', 'description', 'date', 'image', 'organizations', 'organizers')
-        
-# class EventSerializer(serializers.ModelSerializer):
-#     organizations = serializers.StringRelatedField(many=True)
-#     organizers = UserSerializer(many=True, read_only=True)
-
-#     class Meta:
-#         model = Event
-#         fields = ('id', 'title', 'description', 'date', 'image', 'organizations', 'organizers')
-       
-
 class OneEventSerializer(serializers.ModelSerializer):
     organizers = serializers.SerializerMethodField()
 

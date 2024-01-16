@@ -10,7 +10,6 @@ Register the created models
 for their processing by the administrator
 """
 
-
 class OrganizationInline(admin.TabularInline):
     model = Event.organizations.through
 
@@ -64,7 +63,6 @@ class UserAdmin(admin.ModelAdmin):
         return ', '.join([org.title for org in obj.events.all()])
     
     display_events.short_description = 'Мероприятия'
-
 
 admin.site.register(OrganizationEvent)
 

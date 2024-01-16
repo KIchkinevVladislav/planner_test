@@ -1,0 +1,36 @@
+{% extends 'chat/base.html' %}
+{% block title %} Home {% endblock title %}
+{% block content %}
+    <h1 style="margin-top: 3px;">Сервис чата</h1>
+
+    {% if user.is_authenticated %}
+      <h2>Добро пожаловать, {{ user.get_full_name }}!</h2>
+      <p><a href="{% url 'api:logout' %}" class="btn btn-secondary">Выйти из аккаунта</a></p>
+      <a href="{% url 'chat:new_group' %}" class="btn btn-secondary">Создать новый чат</a>
+      
+      
+
+    <ul>
+      {% for group in groups %}
+      <div id="{{ group.uuid }}">
+        <li><a>{{ group.uuid }}</a></li>
+          {% if request.user in group.members.all %}
+            <a href="{% url 'chat:open_chat' uuid=group.uuid %}">Открыть чат</a>
+            <a href="{% url 'chat:leave_group' uuid=group.uuid %}">Покинуть чат</a>
+            {% if user.is_superuser %}
+            <a href="{% url 'chat:remove_group' uuid=group.uuid %}">Удалить чат</a>
+            {% endif %}
+          {% else %}
+            <a href="{% url 'chat:join_group' uuid=group.uuid %}">Присоединиться к чату</a>
+          {% endif %}
+      </div>
+      {% endfor %}
+    </ul>
+
+    {% else %}
+      <h2>Пожалуйста, войдите или зарегистрируйтесь.</h2>
+      <p><a href='{% url 'rest_framework:login' %}' class="btn btn-secondary">Войти</a></p> 
+      <a href="{% url 'api:signup' %}" class="btn btn-info">Зарегистрироваться</a>
+    {% endif %}
+
+{% endblock content %}

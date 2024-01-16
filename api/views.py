@@ -66,6 +66,7 @@ class EventListView(ListAPIView):
 class SignupAPIView(CreateAPIView):
     serializer_class = SignupSerializer
     permission_classes = [AllowAny,]
+    
 
 
 def logout_view(request):
