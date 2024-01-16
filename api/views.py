@@ -1,17 +1,17 @@
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework import filters
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import LimitOffsetPagination
 
-from django.contrib.auth import logout, login
+from django.contrib.auth import logout
 from django.shortcuts import redirect
 
 
-from api.serializers import OrganizationSerializer, EventSerializer, EventCreateSerializer, SignupSerializer
-from events.models import Organization, Event
+from api.serializers import OrganizationSerializer, EventSerializer, EventCreateSerializer, SignupSerializer, OneEventSerializer
+from events.models import Organization, Event, EventOrganizers
 
 
 class OrganizationCreateAPIView(CreateAPIView):
@@ -56,7 +56,7 @@ class EventListView(ListAPIView):
     search_fields = ['title']
     ordering_fields = ['date']
     pagination_class = LimitOffsetPagination
-    permission_classes = [IsAuthenticated,]
+    # permission_classes = [IsAuthenticated,]
 
     def get_queryset(self):
         queryset = Event.objects.all()
@@ -71,3 +71,10 @@ class SignupAPIView(CreateAPIView):
 def logout_view(request):
     logout(request)
     return redirect('http://127.0.0.1:8000/api/v1/auth/login/')
+
+
+
+class EventDetailView(RetrieveAPIView):
+    queryset = Event.objects.all()
+    serializer_class = OneEventSerializer
+    #permission_classes = [IsAuthenticated,]

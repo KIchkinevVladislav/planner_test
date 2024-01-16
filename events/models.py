@@ -36,7 +36,7 @@ class Organization(models.Model):
 
 class Event(models.Model):
     """
-    Class describing the fields of the "Ivent" object 
+    Class describing the fields of the "Event" object 
     in the database
     """
     title = models.CharField(
@@ -50,7 +50,7 @@ class Event(models.Model):
     )
     organizations = models.ManyToManyField(
         Organization,
-        through='Organization_Event',
+        through='OrganizationEvent',
         verbose_name='Организовывающие организации'
     )
     image = models.ImageField(
@@ -70,11 +70,12 @@ class Event(models.Model):
         verbose_name_plural = 'Мероприятия'
 
     
-class Organization_Event(models.Model):
+class OrganizationEvent(models.Model):
     """
-    Class describing the fields of the "Organization_Event" object 
+    Class describing the fields of the "OrganizationEvent" object 
     in the database
-    To implement the connection of several organizations with one event.
+    This model represents the relationship 
+    between organization and events.
     """        
     event_id = models.ForeignKey(
         Event, 
@@ -91,7 +92,6 @@ class Organization_Event(models.Model):
     class Meta():
         verbose_name = 'Связь организации и мероприятия'
         verbose_name_plural = 'Cвязи организацией и мероприятий'  
-
 
 
 class UserManager(BaseUserManager):
@@ -123,6 +123,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=25, blank=True, null=True, verbose_name='Фамилия')
     phone_number = models.CharField(max_length=12, blank=True, null=True, verbose_name='Номер телефона')
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Организация, в которой работает пользователь')
+    events = models.ManyToManyField(
+        Event,
+        through='EventOrganizers',
+        blank=True,
+        verbose_name='Мероприятий, в которых участвует пользователь'
+    )
     is_staff = models.BooleanField(default=False, verbose_name='Статус персонала сервиса')
 
     USERNAME_FIELD = 'email'
@@ -135,19 +141,20 @@ class User(AbstractBaseUser, PermissionsMixin):
             verbose_name = 'Пользователь'
             verbose_name_plural = 'Пользователи'
 
-
-# class Events_User(models.Model):
-#     """
-#     Class describing the fields of the "Events_User" object 
-#     in the database
-#     To implement the connection of several enents with one user.
-#     """        
-#     event_id = models.ForeignKey(Event, on_delete=models.CASCADE, null=True, blank=True)
-#     user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-
-#     def __str__(self) -> str:
-#         return  f'{self.user_id} участвует в создании мероприятия {self.event_id}'
+               
+class EventOrganizers(models.Model):
+    """
+    Model describing the fields of the "EventOrganizers" object 
+    in the database. This model represents the relationship 
+    between events and users.
+    """        
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    event_id = models.ForeignKey(Event, on_delete=models.CASCADE)
     
-#     class Meta():
-#         verbose_name = 'Связь участника организации и мероприятия'
-#         verbose_name_plural = 'Cвязи участников организаций и мероприятий'   
+
+    def __str__(self) -> str:
+        return f'{self.user_id.last_name} участвует в организации {self.event_id.title}'
+
+    class Meta():
+        verbose_name = 'Участие пользователя в организации мероприятий'
+        verbose_name_plural = 'Участие пользователей в организации мероприятий'

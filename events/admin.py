@@ -2,17 +2,21 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
 
-from .models import Organization, Event, Organization_Event
+from .models import Organization, Event, OrganizationEvent, EventOrganizers
 
 User = get_user_model()
 """
 Register the created models 
 for their processing by the administrator
 """
-admin.site.register(Organization_Event)
+
 
 class OrganizationInline(admin.TabularInline):
     model = Event.organizations.through
+
+
+class EventsInline(admin.TabularInline):
+    model = User.events.through
 
 
 @admin.register(Organization)
@@ -47,9 +51,21 @@ class EventAdmin(admin.ModelAdmin):
 
 
 @admin.register(User)
-class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ('email', 'last_name', 'first_name', 'organization', 'phone_number')
-    fields = ('email', ('first_name', 'last_name'), 'phone_number', 'organization', 'is_staff')
+class UserAdmin(admin.ModelAdmin):
+    inlines = [EventsInline]
+    list_display = ('email', 'last_name', 'first_name', 'organization', 'phone_number', 'display_events')
+    fields = ('email', ('first_name', 'last_name'), 'phone_number', 'organization', 'is_staff',)
     list_filter = ('organization',)
     search_fields = ('email', 'last_name')
     ordering = ('last_name', 'organization')
+
+    def display_events(self, obj):
+        # отображение организаторов 
+        return ', '.join([org.title for org in obj.events.all()])
+    
+    display_events.short_description = 'Мероприятия'
+
+
+admin.site.register(OrganizationEvent)
+
+admin.site.register(EventOrganizers)
