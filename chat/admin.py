@@ -7,7 +7,7 @@ for their processing by the administrator
 """
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ('author', 'timestamp', 'content', 'group')
+    list_display = ('id', 'author', 'timestamp', 'content', 'group')
     readonly_fields = ('author', 'timestamp', 'content', 'group')
     list_filter = ('group', 'author')
     search_fields = ('author', 'content')
@@ -16,7 +16,7 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
-    list_display = ('uuid', 'display_members',)
+    list_display = ('id', 'uuid', 'display_members',)
     readonly_fields = ('uuid', 'members',)
     list_filter = ('uuid',)
     ordering = ('uuid',)

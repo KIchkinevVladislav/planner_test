@@ -1,0 +1,1 @@
+[{"model": "events.organizationevent", "pk": 1, "fields": {"event_id": 18, "organization_id": 2}}, {"model": "events.organizationevent", "pk": 2, "fields": {"event_id": 18, "organization_id": 3}}, {"model": "events.organizationevent", "pk": 3, "fields": {"event_id": 1, "organization_id": 3}}]

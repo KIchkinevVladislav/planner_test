@@ -20,7 +20,7 @@ class EventsInline(admin.TabularInline):
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ('title', 'description', 'address', 'postcode')
+    list_display = ('id', 'title', 'description', 'address', 'postcode')
     fields = ('title', 'description', ('address', 'postcode'))
     list_filter = ('title', 'postcode')
     search_fields = ('title',)
@@ -30,7 +30,7 @@ class OrganizationAdmin(admin.ModelAdmin):
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     inlines = [OrganizationInline]
-    list_display = ('title', 'description', 'display_organizations', 'date', 'get_image')
+    list_display = ('id', 'title', 'description', 'display_organizations', 'date', 'get_image')
     readonly_fields = ('get_image',)
     list_filter = ('title', 'date')
     search_fields = ('title', 'organizations__title')
@@ -52,7 +52,7 @@ class EventAdmin(admin.ModelAdmin):
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     inlines = [EventsInline]
-    list_display = ('email', 'last_name', 'first_name', 'organization', 'phone_number', 'display_events')
+    list_display = ('id', 'email', 'last_name', 'first_name', 'organization', 'phone_number', 'display_events')
     fields = ('email', ('first_name', 'last_name'), 'phone_number', 'organization', 'is_staff',)
     list_filter = ('organization',)
     search_fields = ('email', 'last_name')
