@@ -45,6 +45,9 @@ class OrganizationSerializer(serializers.ModelSerializer):
 
         
 class EventCreateSerializer(serializers.ModelSerializer):
+    """
+    Serializer to create models Event.
+    """
     organizations = serializers.PrimaryKeyRelatedField(
         queryset=Organization.objects.all(),
         many=True,
@@ -57,6 +60,9 @@ class EventCreateSerializer(serializers.ModelSerializer):
     
 
 class EventSerializer(serializers.ModelSerializer):
+    """
+    Serializer for a list of Event models.
+    """
     organizations = OrganizationSerializer(many=True, read_only=True)
 
     class Meta:
@@ -64,7 +70,12 @@ class EventSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'organizations', 'date', 'image')
 
 
-class OneEventSerializer(serializers.ModelSerializer):
+class DetailEventSerializer(serializers.ModelSerializer):
+    """
+    Custom Serializer for one event.
+    Displays a list of users participating in an organization, 
+    divided by organizations.
+    """
     organizers = serializers.SerializerMethodField()
 
     class Meta:

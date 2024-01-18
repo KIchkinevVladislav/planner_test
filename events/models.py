@@ -91,7 +91,7 @@ class OrganizationEvent(models.Model):
     
     class Meta():
         verbose_name = 'Связь организации и мероприятия'
-        verbose_name_plural = 'Cвязи организацией и мероприятий'  
+        verbose_name_plural = 'Cвязи организаций и мероприятий'  
 
 
 class UserManager(BaseUserManager):
