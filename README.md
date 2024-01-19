@@ -51,13 +51,13 @@ Redis
 
 `python manage.py migrate`
 
-Для доступа к панели администратора создайте администратора:
-
-`python manage.py createsuperuser`
-
 Посредством фикстур заполняем базу данных:
 
 `./load_fixtures.sh`
+
+Для доступа к панели администратора создайте администратора:
+
+`python manage.py createsuperuser`
 
 Запустите приложение:
 
